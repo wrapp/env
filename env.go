@@ -4,6 +4,7 @@ package env
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -24,4 +25,17 @@ func Bool(key string) bool {
 		return true
 	}
 	return false
+}
+
+// DefaultInt gets the parsed int value of an environment variable or a default if not set or parsing failed
+func DefaultInt(key string, def int) int {
+	env := os.Getenv(key)
+	if env == "" {
+		return def
+	}
+	i, err := strconv.ParseInt(env, 10, 32)
+	if err != nil {
+		return def
+	}
+	return int(i)
 }
